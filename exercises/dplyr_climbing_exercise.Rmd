@@ -1,0 +1,100 @@
+---
+title: "climbing solution"
+author: "Jen Richmond"
+date: "15/11/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# load packages 
+
+```{r}
+library(tidyverse)
+library(here)
+```
+
+# read in the peaks data
+
+This data comes from [Tidy Tuesday Week 39 2020](https://github.com/rfordatascience/tidytuesday/blob/master/data/2020/2020-09-22/readme.md)
+
+```{r}
+
+peaks <- read_csv(here("data", "peaks.csv"))
+
+```
+
+# Peaks 
+
+### 1. How many different himalayan peaks are represented in this dataset?
+
+```{r}
+
+
+ 
+```
+
+### 2. what proportion of them have been climbed vs not?
+
+```{r}
+
+```
+
+### 3. is there any difference in the average height of those that have been climbed vs not?
+
+```{r}
+
+```
+
+### 4. Which peak was climbed first?
+
+```{r}
+
+```
+
+### 5. How many of the first ascents were achieved by teams from Australia or New Zealand? 
+
+```{r}
+
+
+
+```
+
+### 6. How many of first ascents had teams that involved climbers from NZ or Australia (as well as people from other countries)?
+
+```{r}
+
+
+```
+
+### 7. Add a new variable that lists TRUE/FALSE re whether or not there was a Kiwi on the climbing team. Use it to calc what proportion of first ascents had Kiwis on the team?
+
+```{r}
+
+
+
+    
+  
+```
+
+### 8. How many of the peaks climbed, do we not know the date/country of the ascent?
+
+```{r}
+
+ 
+```
+
+### 9. which peak is closest in height to everest?
+
+```{r}
+
+```
+
+# 10. What proportion of the  peaks taller than 7000 ft have been climbed? 
+
+```{r}
+
+```
+
