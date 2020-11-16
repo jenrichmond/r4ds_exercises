@@ -43,6 +43,10 @@ peaks %>%
   count(climbing_status) %>%
   pivot_wider(names_from= climbing_status, values_from = n) %>%
   mutate(prop = Climbed/(Climbed + Unclimbed))
+  
+# alternate method using mean of a column of logical values to calc propn
+peaks %>% 
+  summarise(propn_climbed = mean(climbing_status == "Climbed"))
 ```
 
 ### 3. is there any difference in the average height of those that have been climbed vs not?
@@ -59,6 +63,10 @@ peaks %>%
 peaks %>%
   arrange(first_ascent_year) %>%
   select(first_ascent_year, everything())
+  
+# alternative method 
+peaks %>% 
+  slice_min(first_ascent_year, n = 2)  # selected top two as the year 201 may be a typo
 ```
 
 ### 5. How many of the first ascents were achieved by teams from Australia or New Zealand? 
@@ -91,8 +99,10 @@ peaks_kiwi %>%
   summarise(sumkiwi = sum(kiwi, na.rm = TRUE), 
             propkiwi = sumkiwi/n())
 
-    
-  
+# alternate method using mean of a column of logical values to calc propn
+peaks %>% 
+  mutate(kiwi = str_detect(first_ascent_country, "Zealand")) %>%
+  summarise(propn_with_kiwi = mean(kiwi, na.rm = TRUE))
 ```
 
 ### 8. How many of the peaks climbed, do we not know the date/country of the ascent?
@@ -101,7 +111,11 @@ peaks_kiwi %>%
 peaks %>%
   group_by(climbing_status) %>%
   count(is.na(first_ascent_year))
- 
+  
+# alternate method
+peaks %>%
+  filter(climbing_status == "Climbed") %>% 
+  filter(is.na(first_ascent_year) | is.na(first_ascent_country))
 ```
 
 ### 9. which peak is closest in height to everest?
@@ -109,6 +123,10 @@ peaks %>%
 ```{r}
 peaks %>%
   arrange(-height_metres)
+  
+# alternate method 
+peaks %>% 
+  slice_max(height_metres, n = 2)
 ```
 
 # 10. What proportion of the  peaks taller than 7000 ft have been climbed? 
@@ -118,5 +136,10 @@ peaks %>%
   filter(height_metres > 7000) %>%
   count(climbing_status) %>%
   mutate(prop = n / sum(n))
+  
+# alternate method using mean of a column of logical values to calc propn
+peaks %>% 
+  filter(height_metres > 7000) %>% 
+  summarise(propn_climbed = mean(climbing_status == "Climbed"))
 ```
 
