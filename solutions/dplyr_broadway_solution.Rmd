@@ -1,0 +1,141 @@
+---
+title: "dplyr_broadway"
+author: "Jen Richmond"
+date: "15/11/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# load packages
+```{r}
+library(tidyverse)
+library(lubridate)
+```
+
+# read data
+
+Tidy Tuesday data week 18 re [Broadway shows](https://github.com/rfordatascience/tidytuesday/blob/master/data/2020/2020-04-28/readme.md)
+```{r}
+grosses <- readr::read_csv(here("data", "broadway.csv"))
+
+```
+
+```{r}
+glimpse(grosses) 
+
+```
+
+# 1. lets look at just Hamilton
+
+Make a new dataframe with just Hamilton show weeks. 
+
+```{r}
+hamilton <- grosses %>%
+  filter(show == "Hamilton")
+```
+
+# 2. how have Hamilton ticket prices changed?
+
+Calculate the mean ticket price each month/year since the show started. Visualise changes in ticket price using facet_wrap(~year.)
+
+```{r}
+tickets <- hamilton %>%
+  group_by(month(week_ending, label = TRUE), year(week_ending)) %>%
+  summarise(meanticket = mean(avg_ticket_price)) %>%
+  rename(month = `month(week_ending, label = TRUE)`, year = `year(week_ending)`)
+  
+  
+tickets %>% ggplot(aes(x = month, 
+             y = meanticket, fill = month)) +
+  geom_col() +
+  facet_wrap(~ year)
+```
+# 3. How much money does Hamilton generate on average each week?
+
+How does it compare the Wicked, Rent, and The Lion King? Filter for just those 4 shows.
+```{r}
+fav <- grosses %>%
+  filter(show %in% c("Hamilton", "Wicked", "Rent", "The Lion King"))
+```
+
+Calculate the mean weekly gross by show and year. Plot using facet_wrap(~show). 
+```{r}
+
+options(scipen = 999)
+
+comparison <- fav %>%
+  group_by(show, year(week_ending)) %>%
+  summarise(meanweeklygross = mean(weekly_gross)) %>%
+  rename(year = `year(week_ending)`)
+  
+  
+comparison %>%
+    ggplot(aes(x = year,
+               y = meanweeklygross)) +
+  geom_col() +
+  facet_wrap(~show)
+```
+
+# 4. How many people have seen hamilton since it began?
+
+Add a new column to the hamilton df that sums cumulative audiences and use it to calculate how many people have seen hamilton since it started.   
+
+```{r}
+total <- hamilton %>%
+  arrange(week_ending) %>%
+  mutate(totalviewers = cumsum(seats_sold)) 
+
+
+max(total$totalviewers)
+```
+
+# 5. are there other shows that have had as many sell out weeks as hamilton? 
+
+How many weeks has Hamilton had capacity greater or equal to 1?
+
+```{r}
+hamilton %>%
+  count(pct_capacity >= 1)
+```
+
+What other shows have run for as many (or more) weeks at full capacity? 
+```{r}
+fullweeks <- grosses %>%
+  group_by(show) %>%
+  count(pct_capacity >= 1) %>%
+  rename(full = "pct_capacity >= 1") %>%
+  filter(full == "TRUE", n >= 241) %>%
+  rename(weeks_full = n)
+
+
+```
+
+
+# 6. What proportion of weeks runnnig have the shows run at full capacity?
+
+How many weeks have the 5 shows that have run full for as many (or more weeks) as Hamilton been running for?
+```{r}
+super_shows <- c("Hamilton", "The Book of Mormon", "The Lion King", "The Phantom of the Opera", "Wicked")
+
+runweeks <- grosses %>%
+  filter(show %in% super_shows) %>%
+  count(show) %>%
+  rename(weeks_total = n)
+
+```
+
+What proportion of weeks have each of the shows run at full capacity? Plot the proportion of weeks at full capacity to see if any show compares to the 100% of Hamilton
+
+```{r}
+propfull_weeks <- left_join(fullweeks, runweeks) %>%
+  mutate(proportion = weeks_full/weeks_total)
+
+propfull_weeks %>%
+  ggplot(aes(x = show, y = proportion, fill = show)) +
+  geom_col() +
+  ggeasy::easy_remove_legend()
+```
+

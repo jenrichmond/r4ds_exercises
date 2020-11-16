@@ -1,0 +1,96 @@
+---
+title: "dplyr_broadway"
+author: "Jen Richmond"
+date: "15/11/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# load packages
+```{r}
+library(tidyverse)
+library(lubridate)
+```
+
+# read data
+
+Tidy Tuesday data week 18 re [Broadway shows](https://github.com/rfordatascience/tidytuesday/blob/master/data/2020/2020-04-28/readme.md)
+```{r}
+grosses <- readr::read_csv(here("data", "broadway.csv"))
+
+```
+
+```{r}
+glimpse(grosses) 
+
+```
+
+# 1. lets look at just Hamilton
+
+Make a new dataframe with just Hamilton show weeks. 
+
+```{r}
+
+```
+
+# 2. how have Hamilton ticket prices changed?
+
+Calculate the mean ticket price each month/year since the show started. Visualise changes in ticket price using facet_wrap(~year.)
+
+```{r}
+
+```
+# 3. How much money does Hamilton generate on average each week?
+
+How does it compare the Wicked, Rent, and The Lion King? Filter for just those 4 shows.
+```{r}
+
+```
+
+Calculate the mean weekly gross by show and year. Plot using facet_wrap(~show). 
+```{r}
+
+
+```
+
+# 4. How many people have seen hamilton since it began?
+
+Add a new column to the hamilton df that sums cumulative audiences and use it to calculate how many people have seen hamilton since it started.   
+
+```{r}
+
+```
+
+# 5. are there other shows that have had as many sell out weeks as hamilton? 
+
+How many weeks has Hamilton had capacity greater or equal to 1?
+
+```{r}
+
+```
+
+What other shows have run for as many (or more) weeks at full capacity? 
+```{r}
+
+
+
+```
+
+
+# 6. What proportion of weeks runnnig have the shows run at full capacity?
+
+How many weeks have the 5 shows that have run full for as many (or more weeks) as Hamilton been running for?
+```{r}
+
+
+```
+
+What proportion of weeks have each of the shows run at full capacity? Plot the proportion of weeks at full capacity to see if any show compares to the 100% of Hamilton
+
+```{r}
+
+```
+
