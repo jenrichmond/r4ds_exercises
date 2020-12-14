@@ -1,0 +1,87 @@
+---
+title: "Do cockroaches care if they are being watched?"
+author: "Jen Richmond"
+date: "26/11/2020"
+output:
+  html_document: 
+    toc: yes
+    toc_depth: 2
+    theme: spacelab
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Hi tidyvcert team...
+
+This is an exercise I am putting together for a course I'm planning re computational reproducibility for next year. Ill leave the preamble in for you, but the goal is to reproduce the descriptive statistics and plot in the paper from the open data published in Psychological Science. Have fun! Jen
+
+# Summary
+
+Social psychologists have long studied how the presence of other people can sometimes facilitate our performance and other times be detrimental. In his now famous drive theory, Zajonc (1965) argued that task complexity moderates the direction of the social facilitation/inhibition effect. When executing a simple learned response, our performance is typically enhanced by the presence of others, however, when we are learning a new task, having others watch us can put us off our game.  
+
+In seminal paper, [Zajonc, Heingartner, and Herman (1969)](https://psycnet.apa.org/record/1970-00434-001) reported that the interaction between task complexity and social facilitation was not a uniquely human phenomenon, but also extended to cockroaches. Here they tested cockroaches on a simple runway task or a complex maze task, either in the presence of other cockroaches or alone. Much like in humans, cockroaches ran the simple runway faster when others were watching, but were slower at completing the complex maze in the presence of others. 
+
+While this paper appears in textbooks and is highly cited, researchers have recently noted that the study was likely to be underpowered and that the key interaction between task difficulty and audience presence was never statistically tested. In a registered replication, [Halfmann, Bredehoft, & Hausser (2020)](https://journals.sagepub.com/doi/full/10.1177/0956797620902101) aimed to replicate the original study with a large sample and to test whether they could find evidence of a difficulty (simple, complex) x audience (present, absent) interaction. 
+
+In the replication study, Halfmann et al., (2020) tested 120 cockroaches, a sample 3 times the size of that used in the original paper. Using a between-subjects design, each roach was tested on either the runway or maze task, either in the presence of others or alone. Each roach completed 10 trials. The results showed that there were significant main effects of both task difficulty and audience presence. Roaches completed the runway task more quickly than the maze task, and performed more slowly in the presence of others than when running alone. However, the task difficulty by audience interaction was not significant. Contrary to the original published paper, there was a social inhibition effect in both the runway and the maze task.  
+
+
+# Questions to answer in your exploring...
+
+- how many roaches were in each group?
+- what does the distribution of "valid" trials look like?
+- reproduce these descriptives...
+
+> "In line with the descriptive data provided by Zajonc et al. (1969), our data showed that cockroaches needed more time to complete the maze (M = 137.48 s, SD = 121.88), compared with the easier runway (M = 77.00 s,
+SD = 76.16), F(1, 116) = 15.45, p < .001, ηp 2 = .12, BF10 = 20.79. Moreover, in the audience-present condition, cockroaches were slower (M = 164.59 s, SD = 98.84), compared with the audience-absent condition (M = 49.90 s, SD = 77.81), F(1, 116) = 55.58, p < .001, ηp 2 = .32, BF10 = 6.36e+7."
+
+-  reproduce this boxplot/scatter plot...
+
+```{r}
+
+knitr::include_graphics(here::here("img", "boxscatter.png"))
+```
+
+Other interesting questions to answer...
+
+- what is the name of the fastest roach for each task?
+- does the temperature and/or humidity impact roach performance
+- do the cockroaches "learn" i.e. are they faster on trial 10 than on trial 1
+
+## load packages
+```{r message=FALSE, warning=FALSE}
+library(here) # to help with file paths
+library(haven) # to read files from spss
+library(janitor) # to clean_names and count things
+library(tidyverse) # for dplyr and ggplot
+library(gt) # for nice tables
+library(papaja) # for theme_apa
+library(naniar) # for visualising missing data
+library(ggeasy) # for easy ggplot functions
+```
+
+## read data 
+
+Tip- when I was first looking at this data, I didn't realise there were summary variables on the right side of the df. The variable `med_rt_sl` is the key DV. 
+```{r}
+roaches <- read_sav(here("data", "roaches")) %>%
+  clean_names() 
+
+```
+
+
+## valid trials
+
+
+
+
+
+## descriptives
+
+
+
+
+
+## plot
